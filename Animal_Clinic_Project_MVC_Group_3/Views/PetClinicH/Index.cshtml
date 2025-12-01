@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Animal_Clinic_Project_MVC_Group_3.Models.VPetHistory>
+
+@{
+    ViewData["Title"] = "Pet Clinical History";
+}
+
+<h2>Pet Clinical History</h2>
+
+<table class="table table-sm table-striped">
+    <thead>
+        <tr>
+            <th>Pet</th>
+            <th>Species</th>
+            <th>Age</th>
+            <th>Owner</th>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Treatment</th>
+            <th>Vet</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+
+        {
+            <tr>
+                <td>@item.PetName</td>
+                <td>@item.Species</td>
+                <td>@item.Age</td>
+                <td>@item.OwnersName</td>
+                <td>@item.Date.ToString("dd/MM/yyyy")</td>
+                <td>@(item.Description?.Length > 50 ? item.Description.Substring(0, 50) + "..." : item.Description)</td>
+                <td>@(item.Treatment?.Length > 50 ? item.Treatment.Substring(0, 50) + "..." : item.Treatment)</td>
+                <td>@item.VetName</td>
+            </tr>
+        }
+    </tbody>
+</table>

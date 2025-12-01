@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Animal_Clinic_Project_MVC_Group_3.Models.VetsAvailability>
+
+@{
+    ViewData["Title"] = "Available Veterinarian Slots";
+}
+
+<h2>Available Vet Slots</h2>
+
+<table class="table table-sm table-bordered">
+    <thead>
+        <tr>
+            <th>Vet</th>
+            <th>Free Slot</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+
+        {
+            <tr>
+                <td>@item.VetName</td>
+                <td>@item.Slot.ToString(@"hh\:mm")</td>
+            </tr>
+        }
+    </tbody>
+</table>

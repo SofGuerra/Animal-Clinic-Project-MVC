@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Animal_Clinic_Project_MVC_Group_3.Models.ClinicUser>
+
+@{
+    ViewData["Title"] = "All Registered Users";
+}
+
+<h2>All Registered Users</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>User Type</th>
+            <th>Speciality</th>
+            <th>Availability</th>
+            <th>Phone</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.UserId</td>
+                <td>@(item.FirstName + " " + item.LastName)</td>
+                <td>@item.Email</td>
+                <td>@item.Role</td>
+                <td>@item.UserType</td>
+                <td>@(item.Speciality ?? "-")</td>
+                <td>@(item.Availability ?? "-")</td>
+                <td>@(item.Phone ?? "-")</td>
+            </tr>
+        }
+    </tbody>
+</table>

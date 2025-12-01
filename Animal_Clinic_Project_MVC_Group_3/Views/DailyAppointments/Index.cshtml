@@ -1,0 +1,31 @@
+﻿@model IEnumerable<Animal_Clinic_Project_MVC_Group_3.Models.DailyAppointment>
+
+@{
+    ViewData["Title"] = "Daily Appointments";
+}
+
+<h2>Today's Appointments</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Vet</th>
+            <th>Time</th>
+            <th>Pet</th>
+            <th>Owner</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.VetsName</td>
+                <td>@item.SlotTime</td>
+                <td>@item.PetName</td>
+                <td>@item.OwnersName</td>
+                <td>@item.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>

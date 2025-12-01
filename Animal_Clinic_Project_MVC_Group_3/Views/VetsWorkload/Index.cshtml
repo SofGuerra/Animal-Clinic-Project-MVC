@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Animal_Clinic_Project_MVC_Group_3.Models.VetsWorkload>
+
+@{
+    ViewData["Title"] = "Vets Workload – Current Month";
+}
+
+<h2>Veterinarians Workload (@DateTime.Now.ToString("MMMM yyyy"))</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Vet Name</th>
+            <th class="text-center">Total Appointments</th>
+            <th class="text-center">Completed</th>
+            <th class="text-center">Cancelled</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+
+        {
+            <tr>
+                <td>@item.VetName</td>
+                <td class="text-center">@item.TotalAppointments</td>
+                <td class="text-center text-success">@item.Completed</td>
+                <td class="text-center text-danger">@item.Cancelled</td>
+            </tr>
+        }
+    </tbody>
+</table>

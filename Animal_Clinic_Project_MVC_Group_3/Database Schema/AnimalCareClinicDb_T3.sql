@@ -376,7 +376,6 @@ ON Appointment
 AFTER INSERT
 AS
 BEGIN
-    SET NOCOUNT ON;
     
     -- Verificar si hay citas con fecha pasada y revertir la transacción
     IF EXISTS (
