@@ -6,8 +6,17 @@
 
 <h1>Clinic Histories</h1>
 
+<style>
+
+    .table td, .table th {
+    padding: 2px 2px !important;
+    vertical-align: middle;
+    }
+
+</style>
+
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="crud-create crud-btn">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -30,7 +39,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Veterinarian)
             </th>
-            <th></th>
+            <th>
+                Options
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -55,9 +66,9 @@
                 @Html.DisplayFor(modelItem => item.Veterinarian.UserId)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.HistoryId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.HistoryId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.HistoryId">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.HistoryId" class="crud-btn crud-edit">Edit</a> 
+                <a asp-action="Details" asp-route-id="@item.HistoryId" class="crud-details crud-btn">Details</a> 
+                <a asp-action="Delete" asp-route-id="@item.HistoryId" class="crud-delete crud-btn">Delete</a>
             </td>
         </tr>
 }

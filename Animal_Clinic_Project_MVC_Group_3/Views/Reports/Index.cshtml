@@ -7,7 +7,7 @@
 <h1>Reports</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="crud-btn crud-create">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -24,7 +24,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.AppointmentsCancelled)
             </th>
-            <th></th>
+            <th>
+                Options
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -43,9 +45,9 @@
                 @Html.DisplayFor(modelItem => item.AppointmentsCancelled)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ReportId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ReportId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ReportId">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.ReportId" class="crud-btn crud-edit">Edit</a> 
+                    <a asp-action="Details" asp-route-id="@item.ReportId" class="crud-btn crud-details">Details</a> 
+                    <a asp-action="Delete" asp-route-id="@item.ReportId" class="crud-btn crud-delete">Delete</a>
             </td>
         </tr>
 }

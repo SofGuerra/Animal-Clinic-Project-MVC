@@ -19,7 +19,73 @@ html {
 
 body {
   margin-bottom: 60px;
+
+
 }
+
+
+.btn-link-as-button {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #4d8bff;
+    color: white !important;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.btn-link-as-button:hover {
+    background-color: #3a6fd6;
+    color: white !important;
+}
+
+/* general base button */
+.crud-btn {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: white !important;
+    font-weight: 500;
+    margin-right: 6px;
+}
+
+/* blue edit button*/
+.crud-edit {
+    background-color: #4d8bff; /* blue */
+}
+
+    .crud-edit:hover {
+        background-color: #3a6fd6; 
+    }
+
+/* gray details button*/
+.crud-details {
+    background-color: #6c757d; /* gray */
+}
+
+    .crud-details:hover {
+        background-color: #565e64;
+    }
+
+/* red delete button */
+.crud-delete {
+    background-color: #dc3545; /* red */
+}
+
+    .crud-delete:hover {
+        background-color: #b52a36;
+    }
+
+
+/* green create button*/
+.crud-create {
+    background-color: #28a745; /* green */
+}
+
+    .crud-create:hover {
+        background-color: #218838;
+    }
 
  /*
 footer {

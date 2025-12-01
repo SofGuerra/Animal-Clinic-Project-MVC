@@ -381,6 +381,7 @@ BEGIN
     IF EXISTS (
         SELECT 1 FROM inserted 
         WHERE Date < CAST(GETDATE() AS DATE)
+        OR (Date = CAST(GETDATE() AS DATE) AND Time < CAST(GETDATE() AS TIME))
     )
     BEGIN
         -- Revertir la transacción
