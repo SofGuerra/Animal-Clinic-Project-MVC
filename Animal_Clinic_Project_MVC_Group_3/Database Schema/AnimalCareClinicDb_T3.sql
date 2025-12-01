@@ -54,8 +54,9 @@ PetID INT PRIMARY KEY NOT NULL,
 Name NVARCHAR(50) NOT NULL,
 Species NVARCHAR(50),
 Age INT,
-OwnerID INT FOREIGN KEY REFERENCES Owner(OwnerID) ON DELETE SET NULL
+OwnerID INT FOREIGN KEY REFERENCES Owner(OwnerID) ON DELETE CASCADE
 );
+
 
 CREATE TABLE Appointment
 (
@@ -369,35 +370,57 @@ GO
 
 ----- TRIGGERS ---------
 
---1 When delete an owner deletes pets
-CREATE OR ALTER TRIGGER delete_pets_from_owner
-ON Owner
-AFTER DELETE
+--1 Trigger para evitar crear citas en fechas pasadas
+CREATE OR ALTER TRIGGER tr_prevent_past_appointments
+ON Appointment
+AFTER INSERT
 AS
 BEGIN
-    DELETE FROM Pet
-    WHERE OwnerID IN (SELECT OwnerID FROM deleted);
+    SET NOCOUNT ON;
+    
+    -- Verificar si hay citas con fecha pasada y revertir la transacción
+    IF EXISTS (
+        SELECT 1 FROM inserted 
+        WHERE Date < CAST(GETDATE() AS DATE)
+    )
+    BEGIN
+        -- Revertir la transacción
+        ROLLBACK TRANSACTION;
+        THROW 51000, 'Cannot create appointments in past dates', 1;
+        RETURN;
+    END;
+    
+    PRINT 'Appointments created successfully - date validation passed';
 END;
 GO
 
---2 When deleting a pet cancel appointments
+
+--2. When deleting an owner, cancel future appointments for their pets
 CREATE OR ALTER TRIGGER cancel_pet_future_appointments
 ON Owner
-AFTER DELETE
+INSTEAD OF DELETE
 AS
 BEGIN
-    UPDATE Appointment
-    SET Status = 'Cancelled'
-    WHERE PetID IN (
-        SELECT PetID 
-        FROM Pet
-        WHERE OwnerID IN (SELECT OwnerID FROM deleted)
-    )
-    AND Date >= CAST(GETDATE() AS DATE);
+        -- Paso 1: CANCELAR las citas futuras ANTES de eliminar anything
+        UPDATE Appointment
+        SET Status = 'Cancelled'
+        WHERE PetID IN (
+            SELECT p.PetID 
+            FROM deleted d
+            JOIN Pet p ON p.OwnerID = d.OwnerID
+        )
+        AND Date >= CAST(GETDATE() AS DATE)
+        AND Status = 'Scheduled';
+        
+        -- Paso 2: Ahora sí eliminar el owner (lo que cascade eliminará los pets)
+        DELETE FROM Owner 
+        WHERE OwnerID IN (SELECT OwnerID FROM deleted);
+
+        PRINT 'Owner deleted successfully. Future appointments cancelled.';
 END;
 GO
 
---3 When deleting a Vet, all appointments are cancelled
+--3 When deleting a Vet, all appointments are cancelled // Si funciona porque ya no sale ese veterinario en opciones y me cancela la cita
 
 CREATE OR ALTER TRIGGER cancel_appointments_afterDelete
 ON Veterinarian
@@ -412,7 +435,7 @@ WHERE UserID IN (SELECT UserID FROM deleted);
 END;
 GO
 
---4 When pet is deleted, delete clinical history
+--4 When pet is deleted, delete clinical history // Funciona pero me deja el campo de pet en null
 
 CREATE OR ALTER TRIGGER delete_clinicalHistory_from_pet
 ON Pet
@@ -423,7 +446,6 @@ BEGIN
     WHERE PetID IN (SELECT PetID FROM deleted);
 END;
 GO
-
 
 ----------TEST VIEWS-----------
 SELECT * FROM daily_appointments;
@@ -449,7 +471,7 @@ GO
 
 SELECT * FROM Appointment
 
---2
+--2x|
 EXEC sp_cancel_appointment
     @AppointmentID = 3;
 
@@ -476,12 +498,11 @@ SELECT Status FROM Appointment WHERE AppointmentID = 1;
 
 ----------TEST TRIGGERS-----------
 
---1
-SELECT * FROM Pet WHERE OwnerID = 10;
-DELETE FROM Owner WHERE OwnerID = 10;
-SELECT * FROM Pet WHERE OwnerID = 10;
+--1 Does not allow create appoinments in past dates
 
---2
+INSERT INTO Appointment (AppointmentID, Date, Time, Duration, Status, PetID, VeterinarianID)VALUES (10, '2020-01-01', '10:00', 30, 'Scheduled', 100, 2);
+
+--2 When pet is deleted, cancel all future appointments
 SELECT * FROM Appointment WHERE PetID IN (SELECT PetID FROM Pet WHERE OwnerID = 10);
 
 DELETE FROM Owner WHERE OwnerID = 10;

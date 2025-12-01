@@ -1,0 +1,131 @@
+					 Microsoft SQL Server 
+				  ----------------------------------
+					Animal Care Clinic Project
+						Group III
+					------------------------
+	  
+
+-----------------
+Pre-requirements
+
+Software To Use:
+-	VISUAL STUDIO 2022 (C# langage)
+-	MICROSOFT SQL SERVEUR 2022/2019
+-----------------
+-------------
+-- Step I  --
+-------------
+
+Create new project
+File → New → Project → ASP.NET Core Web App (Model-View-Controller)
+Target framework: .NET 7 
+Name: AnimalClinicMvc (or your chosen name).
+
+---------------
+-- Step II  --
+---------------
+
+Create the database from the SQL file (You can find it inside the Database Schema Folder called AnimalCareClinicDb_T3)
+Open AnimalCareClinicDb_T3.sql in SSMS and execute it against a SQL Server instance. That will create AnimalCareClinicDb, tables, views, procedures and insert data.
+
+---------------
+-- Step III  --
+---------------
+
+1. Install EF Core NuGet packages 
+In Visual Studio: Tools → NuGet Package Manager
+   Then browse for the each package to install (choose version 7.0.20)					 
+		Microsoft.EntityFrameworkCore -Version 7.0.20
+         	Microsoft.EntityFrameworkCore.SqlServer(7.0.20)
+          	Microsoft.EntityFrameworkCore.Tools(7.0.20)
+          	Microsoft.EntityFrameworkCore.Design(7.0.20) 
+
+2. Open the Package Manager Console to Scaffold the database context as following:
+PM> Scaffold-DbContext "Server=.; Encrypt=false; Database=AnimalCareClinicDb; Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer    -OutputDir Models
+
+//// What this does:
+
+Generates entity classes in Models/ for every table and view
+
+Creates ClinicContext DbContext wired to your tables
+
+3. Wait until it says Build succeeded.
+
+---------------
+-- Step IV  --
+---------------
+
+Open the file appsettings.json to secure the connection as following:
+"ConnectionStrings": { "MyConnectionString": "Server=.; Database=AnimalCareClinicDb;  Encrypt= false; Trusted_Connection=True; " }
+
+2. To confirm that the connection is secured, it supposed to look like this your appsettings.json:
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "MyConnectionString": "Server=.; Database=AnimalCareClinicDb;  Encrypt= false; Trusted_Connection=True; "
+  }
+}
+
+--------------
+--  Step V  --
+--------------
+
+Open the file Program.cs to CONFIGURE the directives, to GET the connection string and ADD the DBContext to the services.
+
+Add directives:
+	1. At the top of the file add:
+		        using Microsoft.EntityFrameworkCore;  
+			using WebAppAspDotNetCore_MVC.Models;
+			var builder = WebApplication.CreateBuilder(args);
+
+Get the connection string:
+	// Get connection string from appsettings.json
+	string? myConnection = builder.Configuration.GetConnectionString("MyConnectionString");
+
+Add Services:
+	// Add controllers with views to the container.
+	builder.Services.AddControllersWithViews();
+
+Add DBContext:
+	// Add database context
+	builder.Services.AddDbContext<AnimalCareClinicDbContext>(options => options.UseSqlServer(myConnection));
+
+Then build the app:
+// Add services to the container.
+	var app = builder.Build();
+
+
+--------------
+-- Step VI  --
+--------------
+
+Right Click → Add a Controller into the folder: Controllers
+Select → MVC Controller with view using Entity Framework
+In the Dialog Box Select → Model class → Name of your new Controller based on your DB (Example Administrator)
+In the Dialog Box Select → DbContext class: Leave the selected one by default
+	A controller named (Administrator) will be added in the Controllers folder				   
+
+
+---------------
+-- Step VII  --
+---------------
+
+Open the Shared folder
+Open _Layout.cshtml file and add the following lines of code below the last <li> item you see:
+
+<li class="nav-item">
+    <a class="nav-link text-dark" asp-area="" asp-controller="Name of the controller (Example: Administrator)" asp-action="Index"> Name of how you want to see it in the nav bar (Administrators) </a>
+</li>
+
+---------------
+-- Step VIII  --
+---------------
+
+REBUILD the Solution
+EXECUTE the Application
