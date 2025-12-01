@@ -74,7 +74,8 @@ public partial class AnimalCareClinicDbContext : DbContext
         {
             entity.HasKey(e => e.AppointmentId).HasName("PK__Appointm__8ECDFCA28E20D61F");
 
-            entity.ToTable("Appointment");
+            entity.ToTable("Appointment", t => t
+                .HasTrigger("tr_prevent_past_appointments"));
 
             entity.Property(e => e.AppointmentId)
                 .ValueGeneratedNever()

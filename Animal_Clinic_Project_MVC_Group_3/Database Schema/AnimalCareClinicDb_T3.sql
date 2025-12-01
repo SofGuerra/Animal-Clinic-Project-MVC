@@ -471,7 +471,7 @@ GO
 
 SELECT * FROM Appointment
 
---2x|
+--2x
 EXEC sp_cancel_appointment
     @AppointmentID = 3;
 
