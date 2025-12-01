@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Animal_Clinic_Project_MVC_Group_3.Models.ReportMonthlyResult>
+
+<h2 class="mb-3">Monthly Report</h2>
+
+<p>
+    <strong>Year:</strong> @ViewBag.Year
+    <br />
+    <strong>Month:</strong> @ViewBag.Month
+</p>
+
+<table class="table table-striped table-bordered mt-3">
+    <thead class="table-dark">
+        <tr>
+            <th>Total Appointments</th>
+            <th>Cancelled Appointments</th>
+            <th>Completed Appointments</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Date</td>
+                <td>@item.Completed</td>
+                <td>@item.Cancelled</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-controller="Reports" asp-action="SelectReport" class="btn btn-secondary mt-3">
+    Back to Report Selector
+</a>

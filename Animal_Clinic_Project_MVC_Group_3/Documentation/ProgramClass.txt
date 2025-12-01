@@ -1,0 +1,34 @@
+﻿using Animal_Clinic_Project_MVC_Group_3.Models;
+using Microsoft.EntityFrameworkCore;
+
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Get connection string from appsettings.json
+string? myConnection = builder.Configuration.GetConnectionString("MyConnectionString");
+
+// Add controllers with views
+builder.Services.AddControllersWithViews();
+
+// Add database context
+builder.Services.AddDbContext<AnimalCareClinicDbContext>(options => options.UseSqlServer(myConnection));
+
+// Add services to the container.
+var app = builder.Build();
+
+// Configure the HTTP request pipeline. 
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+}
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.Run();
