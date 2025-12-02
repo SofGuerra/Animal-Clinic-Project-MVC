@@ -9,6 +9,15 @@
 <p>
     <a asp-action="Create" class="crud-create crud-btn">Create New</a>
 </p>
+@{
+    var msg = Context.Request.Query["message"].ToString();
+}
+@if (!string.IsNullOrEmpty(msg))
+{
+	<div class="alert alert-success">
+		@msg
+	</div>
+}
 <table class="table">
     <thead>
         <tr>
