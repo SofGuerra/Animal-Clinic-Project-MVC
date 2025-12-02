@@ -41,16 +41,18 @@
                 <label asp-for="Role" class="control-label"></label>
                 <input asp-for="Role" class="form-control" />
                 <span asp-validation-for="Role" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            </div >
+            <div class="form-group" style="margin: auto">
+                <input type="submit" value="Create" class="btn btn-primary"/>
             </div>
         </form>
     </div>
 </div>
 
+<br/>
+
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class = "crud-btn crud-details">Back to List</a>
 </div>
 
 @section Scripts {
