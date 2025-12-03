@@ -59,6 +59,7 @@ namespace Animal_Clinic_Project_MVC_Group_3.Controllers
         {
             if (ModelState.IsValid)
             {
+                veterinarian.Role = "Veterinarian";
                 _context.Add(veterinarian);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

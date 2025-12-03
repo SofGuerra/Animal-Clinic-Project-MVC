@@ -59,11 +59,15 @@ namespace Animal_Clinic_Project_MVC_Group_3.Controllers
         {
             if (ModelState.IsValid)
             {
+                administrator.Role = "Administrator";
                 _context.Add(administrator);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+
             }
             return View(administrator);
+
+
         }
 
         // GET: Administrators/Edit/5
